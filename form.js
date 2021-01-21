@@ -120,14 +120,20 @@ function DataFieldBlock (idOfStep, regExpTest) {
 DataFieldBlock.prototype.autocompleteMatching = function (inp, templateArray) {
   var result = [];
   var tmp;
+  var lowCaseStr; 
+  /*clear a capital leter*/
+    inp = inp.toLowerCase();
   /* create a regular expression for test */
   var reg = new RegExp(`(${inp})`);
   var wordSeparator = /\w+/;
   /* iterate an array */
   templateArray.forEach(function (value) {
+      
     /* select a first word */
     tmp = wordSeparator.exec(value)[0];
-    if (reg.test(tmp)) {
+      /*create an upper case word*/
+      lowCaseStr = tmp.toLowerCase();
+    if (reg.test(lowCaseStr)) {
       /* if there was a match - copy to result
            a pice of template */
       result.push(value);
@@ -183,14 +189,16 @@ function DataSenderBlock (nodeAttrId) {
 function autocompleteMatching (inp, templateArray) {
   var result = [];
   var tmp;
+    var lcase;
   /* create a regular expression for test */
   var reg = new RegExp(`(${inp})`);
   var wordSeparator = /\w+/;
   /* iterate an array */
   templateArray.forEach(function (value) {
     /* select a first word */
+      lcase = value.toLowerCase();
     tmp = wordSeparator.exec(value)[0];
-    if (reg.test(tmp)) {
+    if (reg.test(lcase)) {
       /* if there was a match - copy to result
            a pice of template */
       result.push(value);
@@ -419,7 +427,7 @@ function FormMgr () {
   arrayOfitems[3] = new DataFieldBlock('job_area', /([A-Za-z])\w+/);
   arrayOfitems[4] = new DataFieldBlock('specifity', /([A-Za-z])\w+/);
   arrayOfitems[5] = new DataFieldBlock('experience', /(\d)/);
-  arrayOfitems[6] = new DataFieldBlock('email', /([A-Za-z])\w+(@)([a-z])\w+(.)([a-z])\w+/);
+  arrayOfitems[6] = new DataFieldBlock('email', /\A(?:[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*|  "(?:[\x01\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]| \\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@ (?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])\z/);
 
   /* bind to callback function. It picks results
     from all the items */
